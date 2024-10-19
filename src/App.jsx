@@ -1,4 +1,3 @@
-import './App.css'
 import RoutesProvider from './utils/router'
 
 function App() {
