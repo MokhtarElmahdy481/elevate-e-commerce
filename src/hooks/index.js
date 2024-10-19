@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { getProduct, getProducts } from "../services";
 
 // products
 export const useGetProducts = () => {
@@ -9,8 +10,7 @@ export const useGetProducts = () => {
         const fetchProducts = async () => {
             setLoading(true);
             try {
-                const response = await fetch('https://fakestoreapi.com/products');
-                const data = await response.json();
+                const data = await getProducts()
                 setProducts(data);
             } catch (error) {
                 setError(error);
@@ -25,6 +25,33 @@ export const useGetProducts = () => {
     }, []);
     return {
         products,
+        loading,
+        error,
+    }
+}
+export const useGetProduct = (id) => {
+    const [product, setProduct] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    useEffect(() => {
+        const fetchProducts = async () => {
+            setLoading(true);
+            try {
+                const data = await getProduct(id)
+                setProduct(data);
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchProducts();
+        return () => {
+            // Clean up
+        };
+    }, []);
+    return {
+        product,
         loading,
         error,
     }
